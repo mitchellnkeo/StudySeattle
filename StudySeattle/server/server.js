@@ -4,11 +4,20 @@ import dotenv from "dotenv"
 
 dotenv.config()
 
-const { PORT } = process.env;
+const { PORT, DATABASE_URL } = process.env;
+
+const client = new pg.Client({
+	connectionString: DATABASE_URL
+	})
+
+await client.connect();
 
 const app = express();
 app.get("/", (req, res) => {
-    res.send("Test.")
+    client.query("SELECT * FROM attributes")
+    .then((result => {
+        res.json(result.rows)
+    }))
     });
 
     app.listen(PORT, () => {
