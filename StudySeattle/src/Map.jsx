@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import Marker from './Marker' 
 
 const Map = () => {
   const [studySpots, setStudySpots] = useState([]);
@@ -38,10 +39,9 @@ const Map = () => {
 
       // Add markers for study spots
       studySpots.forEach((spot) => {
-        const { latitude, longitude, name, attributes } = spot;
+        const { latitude, longitude } = spot;
         L.marker([latitude, longitude])
           .addTo(mapRef.current)
-          .bindPopup(`<b>${name}</b><br>${formatAttributes(attributes)}`); // Bind popup with study spot name and attributes
       });
     }
 
@@ -54,17 +54,6 @@ const Map = () => {
     };
   }, [studySpots]);
 
-  // Function to format study spot attributes
-  const formatAttributes = (attributes) => {
-    let formattedAttributes = '';
-    // Loop through each attribute and concatenate them into a string
-    for (const key in attributes) {
-      if (attributes.hasOwnProperty(key)) {
-        formattedAttributes += `<b>${key}:</b> ${attributes[key]}<br>`;
-      }
-    }
-    return formattedAttributes;
-  };
 
   return <div ref={mapContainerRef} style={{ height: '100vh' }}></div>; // Set height to 100vh for full viewport height
 };
