@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import axios from 'axios'; // Import Axios for making HTTP requests
 
 
 const Map = () => {
@@ -11,9 +10,13 @@ const Map = () => {
     // Fetch study spots from the backend API endpoint
     const fetchStudySpots = async () => {
       try {
-        const response = await axios.get('/api/study-spots'); // Replace '/api/study-spots' with your actual API endpoint
-        console.log('Fetched study spots:', response.data);
-        setStudySpots(response.data);
+        const response = await fetch('http://localhost:3000/api/study-spots');
+        if (!response.ok) {
+          throw new Error('Failed to fetch study spots');
+        }
+        const data = await response.json();
+        console.log('Fetched study spots:', data);
+        setStudySpots(data);
       } catch (error) {
         console.error('Error fetching study spots:', error);
       }
@@ -24,6 +27,7 @@ const Map = () => {
 
   useEffect(() => {
     // Create map instance and add markers for study spots
+    console.log('Study Spots:', studySpots); // Log studySpots to inspect its value
     if (studySpots.length > 0) {
     const map = L.map('map').setView([47.6062, -122.3321], 13); // Seattle coordinates
 

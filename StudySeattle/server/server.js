@@ -1,7 +1,8 @@
 import express from 'express';
 import pg from 'pg';
 import dotenv from 'dotenv';
-import path from 'path'; // Import path module
+import cors from 'cors'; // Import the cors middleware
+
 
 dotenv.config();
 
@@ -15,16 +16,8 @@ client.connect();
 
 const app = express();
 
-// Middleware to set Content Security Policy (CSP) headers
-app.use((req, res, next) => {
-    res.setHeader('Content-Security-Policy', "default-src 'self'; font-src 'self' https://fonts.gstatic.com; style-src 'self' https://fonts.googleapis.com");
-    next();
-  });
-
-
-// Serve static files from the build directory
-const __dirname = path.dirname(new URL(import.meta.url).pathname); // Resolve __dirname using import.meta.url
-app.use(express.static(path.join(__dirname, '..', 'build')));
+// Enable CORS for all routes
+app.use(cors());
 
 // Endpoint to retrieve study spots and their attributes
 app.get('/api/study-spots', async (req, res) => {
@@ -65,13 +58,6 @@ app.get('/api/study-spots', async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
-// Handle all other routes by serving the index.html file
-app.get('*', (req, res) => {
-    const indexPath = path.join(__dirname, '..', 'build', 'index.html');
-    console.log('Resolved index.html path:', indexPath);
-    res.sendFile(indexPath);
-  });
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
