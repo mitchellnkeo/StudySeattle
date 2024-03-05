@@ -9,7 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
-    "start:backend": "node server/server.js",
+    "start:backend": "nodemon server/server.js",
     "start:frontend": "vite",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

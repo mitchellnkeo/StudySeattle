@@ -42,6 +42,18 @@ const Map = () => {
     });
   }
   }, [studySpots]);
+
+    // Function to format study spot attributes
+    const formatAttributes = (attributes) => {
+      let formattedAttributes = '';
+      // Loop through each attribute and concatenate them into a string
+      for (const key in attributes) {
+        if (attributes.hasOwnProperty(key)) {
+          formattedAttributes += `<b>${key}:</b> ${attributes[key]}<br>`;
+        }
+      }
+      return formattedAttributes;
+    };
   
 
   return <div id="map" style={{ height: '100vh' }}></div>; // Set height to 100vh for full viewport height
